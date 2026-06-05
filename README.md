@@ -1,4 +1,4 @@
-<img width="157" height="81" alt="image" src="https://github.com/user-attachments/assets/c5af61d1-599c-4a15-987d-e1e6f7447aae" /># Public Food Procurement Price Quality Mini-Warehouse
+# Public Food Procurement Price Quality Mini-Warehouse
 
 ## 1. Project Overview
 
