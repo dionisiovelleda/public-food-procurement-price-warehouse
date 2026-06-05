@@ -87,6 +87,7 @@ Initial inspection identified the following points:
 - `Unidade Medida` and `Sigla Unidade Medida` appear to be fully null in this sample.
 - `Descrição Detalhada` has some missing values.
 - Supplier, agency, municipality, and organization names may require standardization in a larger version of the project.
+- The `Data da Compra` field is stored in the CSV as an Excel serial number, such as `46136`, instead of a human-readable date. In Excel, this value is displayed correctly when the column format is changed from General to Date.
 
 ## 7. Data Quality Decisions for the MVP
 
