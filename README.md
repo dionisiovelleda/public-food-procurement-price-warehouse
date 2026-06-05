@@ -1,4 +1,4 @@
-# Public Food Procurement Price Quality Mini-Warehouse
+<img width="157" height="81" alt="image" src="https://github.com/user-attachments/assets/c5af61d1-599c-4a15-987d-e1e6f7447aae" /># Public Food Procurement Price Quality Mini-Warehouse
 
 ## 1. Project Overview
 
@@ -100,6 +100,8 @@ For the first version, the project will use simple and transparent rules:
 6. Keep records with `KG` in the main analytical mart.
 7. Flag records with other units instead of deleting them from staging.
 8. Flag potential price outliers instead of deleting them automatically.
+9. Preserve the original Excel serial date value in the RAW layer.
+10. Convert the Excel serial date into a proper DATE field only in the STAGING layer.
 
 ## 8. Proposed Warehouse Structure
 
