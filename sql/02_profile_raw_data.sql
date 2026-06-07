@@ -1,0 +1,103 @@
+--COUNT HOW MANY LINES
+SELECT COUNT(*) FROM public_food_procurement_wh.raw.raw_procurement_items;
+--COUNT ROWS BY SUPLLY UNITS
+SELECT UNIDADE_FORNECIMENTO, COUNT (*) AS COUNT_UNIDADES
+FROM public_food_procurement_wh.raw.raw_procurement_items
+GROUP BY UNIDADE_FORNECIMENTO
+ORDER BY COUNT_UNIDADES DESC;
+--COUNT ROWS BY SUPLLY UNITS ABBREVIATIONS
+SELECT SIGLA_UNID_FORNECIMENTO, COUNT (*) AS SIGLA_COUNT_UNIDADES
+FROM public_food_procurement_wh.raw.raw_procurement_items
+GROUP BY SIGLA_UNID_FORNECIMENTO
+ORDER BY SIGLA_COUNT_UNIDADES DESC;
+--COUNT HOW MANY NULL PRICE LINES
+SELECT COUNT (*) AS INVALID_PRICE_VALUES
+FROM public_food_procurement_wh.raw.raw_procurement_items
+WHERE Preco_Unitario IS NULL OR TRIM(Preco_Unitario) = '';
+--COUNT HOW MANY QUANTITY IS NULL
+SELECT COUNT (*) AS INVALID_QUANTITY_VALUES
+FROM public_food_procurement_wh.raw.raw_procurement_items
+WHERE QUANTIDADE IS NULL OR TRIM(QUANTIDADE) = '';
+--RAW VALUES FROM DATA_DA_COMPRA
+SELECT 
+    MIN(DATA_DA_COMPRA) AS MIN_DATA,
+    MAX(DATA_DA_COMPRA) AS MAX_DATA,
+    COUNT(DISTINCT DATA_DA_COMPRA) AS DISTINCT_DATE_VALUES
+FROM public_food_procurement_wh.raw.raw_procurement_items;
+--SAMPLE OF PRICE RAW VALUES
+SELECT Preco_Unitario
+FROM public_food_procurement_wh.raw.raw_procurement_items
+LIMIT 5;
+--HOW MANY DISTINCT PRICE VALUES
+SELECT COUNT( DISTINCT Preco_Unitario) AS DISTINCT_PRICE_VALUES
+FROM public_food_procurement_wh.raw.raw_procurement_items;
+--HOW FREQUENCY DISTRIBUTION OF PRICE VALUES
+SELECT Preco_Unitario, COUNT(*) AS FREQUENT_PRICE_VALUES
+FROM public_food_procurement_wh.raw.raw_procurement_items
+GROUP BY Preco_Unitario
+ORDER BY FREQUENT_PRICE_VALUES DESC;
+--HOW MANY DISTINCT SUPPLIERS
+SELECT COUNT(DISTINCT FORNECEDOR) AS DISTINCT_SUPPLIER_COUNT
+FROM public_food_procurement_wh.raw.raw_procurement_items;
+--FREQUENCY OF DISTINCT SUPPLIERS
+SELECT FORNECEDOR, COUNT(*) AS FREQUENT_SUPPLIER
+FROM public_food_procurement_wh.raw.raw_procurement_items
+GROUP BY FORNECEDOR
+ORDER BY FREQUENT_SUPPLIER DESC;
+--HOW MANY DISTINCTS ORGANIZATIONS
+SELECT COUNT(DISTINCT Orgao) AS DISTINCT_ORG
+FROM public_food_procurement_wh.raw.raw_procurement_items;
+--FREQUENCY OF DISTINCT ORGS
+SELECT Orgao, COUNT(*) AS FREQUENT_ORG
+FROM public_food_procurement_wh.raw.raw_procurement_items
+GROUP BY Orgao
+ORDER BY FREQUENT_ORG DESC;
+--HOW MANY DISTINCT UFs
+SELECT COUNT (DISTINCT UF) AS DISTINCT_UF
+FROM public_food_procurement_wh.raw.raw_procurement_items;
+--FREQUENCY OF UFs
+SELECT UF, COUNT(*) AS FREQUENT_UF
+FROM public_food_procurement_wh.raw.raw_procurement_items
+GROUP BY UF
+ORDER BY FREQUENT_UF DESC;
+--CHECK PRICE CONVERSION
+SELECT 
+    MIN(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS MIN_PRICE,
+    MAX(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS MAX_PRICE,
+    AVG(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS AVG_PRICE,
+    MEDIAN(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS MEDIAN_PRICE
+FROM public_food_procurement_wh.raw.raw_procurement_items;
+--CHECK DATE CONVERSION
+SELECT 
+    MIN(DATA_DA_COMPRA),
+    MAX(DATA_DA_COMPRA)
+FROM public_food_procurement_wh.raw.raw_procurement_items;
+--TOP 20 UNIT PRICES WITH CONTEXT
+SELECT
+    ID_COMPRA,
+    ID_ITEM,
+    DESC_DO_ITEM,
+    DATA_DA_COMPRA,
+    QUANTIDADE,
+    OBJETO_DA_COMPRA,
+    UNIDADE_FORNECIMENTO,
+    SIGLA_UNID_FORNECIMENTO,
+    ORGAO,
+    UF,
+    PRECO_UNITARIO,
+    TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2) AS CONVERTED_PRICE
+FROM public_food_procurement_wh.raw.raw_procurement_items
+ORDER BY CONVERTED_PRICE DESC
+LIMIT 20;
+--PRICE SUMMARY BY SUPPLY UNIT ABBREVIATION
+SELECT 
+    SIGLA_UNID_FORNECIMENTO, 
+    COUNT (*) AS SIGLA_COUNT_UNIDADES,
+    MIN(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS MIN_PRICE,
+    MAX(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS MAX_PRICE,
+    AVG(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS AVG_PRICE,
+    MEDIAN(TRY_TO_DECIMAL(REPLACE(REPLACE(Preco_Unitario, '.', ''), ',', '.'), 10, 2)) AS MEDIAN_PRICE
+FROM public_food_procurement_wh.raw.raw_procurement_items
+GROUP BY SIGLA_UNID_FORNECIMENTO
+ORDER BY SIGLA_COUNT_UNIDADES DESC;
+    
